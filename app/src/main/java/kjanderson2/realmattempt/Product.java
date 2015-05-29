@@ -1,12 +1,15 @@
 package kjanderson2.realmattempt;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by kjanderson2 on 5/29/15.
  */
 public class Product extends RealmObject{
+    @PrimaryKey
     private int id;
+
     private String name;
     private int quantity;
 

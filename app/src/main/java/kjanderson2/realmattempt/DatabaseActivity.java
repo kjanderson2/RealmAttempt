@@ -34,7 +34,7 @@ public class DatabaseActivity extends ActionBarActivity{
         Product realmProduct = realm.createObject(Product.class);
 
         realmProduct.setId(product.getId());
-        realmProduct.setName(product.getName().toString());
+        realmProduct.setName(product.getName());
         realmProduct.setQuantity(quantity);
 
         realm.commitTransaction();
@@ -72,8 +72,9 @@ public class DatabaseActivity extends ActionBarActivity{
                 .findFirst();
 
         boolean result = (product != null); //Unsure if a realm query will output null if none is found.
-        product.removeFromRealm();
+
         if(result){
+            product.removeFromRealm();
             idView.setText("Record Deleted");
             productBox.setText("");
             quantityBox.setText("");
