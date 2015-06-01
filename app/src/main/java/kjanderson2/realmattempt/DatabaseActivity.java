@@ -11,6 +11,7 @@ import io.realm.Realm;
 
 public class DatabaseActivity extends ActionBarActivity{
 
+    int primaryKey = 0;
     TextView idView;
     EditText productBox;
     EditText quantityBox;
@@ -30,17 +31,18 @@ public class DatabaseActivity extends ActionBarActivity{
         realm.beginTransaction();
 
         int quantity = Integer.parseInt(quantityBox.getText().toString());
-        Product product = new Product(productBox.getText().toString(), quantity);
+        Product product = new Product(primaryKey, productBox.getText().toString(), quantity);
         Product realmProduct = realm.createObject(Product.class);
 
         realmProduct.setId(product.getId());
         realmProduct.setName(product.getName());
         realmProduct.setQuantity(quantity);
 
-        realm.commitTransaction();
-
         productBox.setText("");
         quantityBox.setText("");
+        primaryKey++;
+
+        realm.commitTransaction();
     }
 
     public void lookupProduct (View view) {
@@ -68,12 +70,10 @@ public class DatabaseActivity extends ActionBarActivity{
         realm.beginTransaction();
 
         Product product = realm.where(Product.class)
-                .contains("name", productBox.getText().toString()) //Not sure about this first parameter
+                .contains("name", productBox.getText().toString())
                 .findFirst();
 
-        boolean result = (product != null); //Unsure if a realm query will output null if none is found.
-
-        if(result){
+        if(product!=null){
             product.removeFromRealm();
             idView.setText("Record Deleted");
             productBox.setText("");
